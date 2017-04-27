@@ -1,0 +1,3 @@
+# Github/Bitbucket Credentials
+git_repo: git@bitbucket.org:...
+git_ssh_priv_key: ~/.ssh/bitbucket

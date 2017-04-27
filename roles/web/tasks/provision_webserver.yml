@@ -1,0 +1,25 @@
+---
+- name: Install nginx php5 php5-fpm
+  apt: pkg=nginx,php5,php5-mysql,php5-cli,php5-fpm state=present
+
+- name: Remove nginx default if exists
+  shell: '[ ! -f default ] || rm default'
+  args:
+    chdir: /etc/nginx/sites-available/
+
+- name: Add nginx config to sites-available
+  template: src=nginx.conf.j2
+            dest=/etc/nginx/sites-available/{{ host }}
+  notify:
+      - restart nginx
+      - restart php5fpm
+
+- name: Add symlink in nginx sites-enabled
+  file: src=/etc/nginx/sites-available/{{ host }}
+        dest=/etc/nginx/sites-enabled/{{ host }} state=link
+  notify:
+      - restart nginx
+      - restart php5fpm
+
+- name: Make sure nginx is running
+  service: name=nginx state=restarted

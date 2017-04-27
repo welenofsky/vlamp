@@ -1,0 +1,13 @@
+---
+- name: Upload ssh key
+  copy: src={{ git_ssh_priv_key }} dest=/home/{{ username }}/.ssh/id_rsa mode=0600 group={{ username }} owner={{ username }}
+
+- name: Add SSH key
+  shell: 'eval "$(ssh-agent -s)" && ssh-add /home/{{ username }}/.ssh/id_rsa'
+
+- name: Git pull repo
+  git: repo={{ git_repo }}
+       dest=/{{ username }}/src/
+       accept_hostkey=True
+       key_file=/home/{{ username }}/.ssh/id_rsa
+       update=True
