@@ -11,3 +11,7 @@
        accept_hostkey=True
        key_file=/home/{{ username }}/.ssh/id_rsa
        update=True
+
+# RPC specific configuration inc
+- name: Creates directory
+  file: path=/home/{{ username }}/src/tmp/cache state=directory owner=vagrant group=vagrant mode=0700 recurse=yes

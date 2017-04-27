@@ -21,5 +21,9 @@
       - restart nginx
       - restart php5fpm
 
+- name: Update www.conf for php5-fpm
+  template: src=www.conf.j2
+            dest=/etc/php5/fpm/pool.d/www.conf
+
 - name: Make sure nginx is running
   service: name=nginx state=restarted
