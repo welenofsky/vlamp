@@ -14,4 +14,7 @@
 
 # RPC specific configuration inc
 - name: Creates directory
-  file: path=/home/{{ username }}/src/tmp/cache state=directory owner=vagrant group=vagrant mode=0700 recurse=yes
+  file: path=/home/{{ username }}/src/tmp/cache state=directory owner=vagrant group=vagrant mode=0777 recurse=yes
+
+- name: Restart apache2
+  service: name=apache2 state=restarted

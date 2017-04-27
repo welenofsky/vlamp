@@ -3,3 +3,9 @@
 *.retry
 src/*
 .vagrant/
+
+\.idea/
+
+bitbucket_insecure\.pub
+
+bitbucket_insecure
