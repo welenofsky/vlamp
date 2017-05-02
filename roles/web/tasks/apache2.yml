@@ -2,11 +2,14 @@
 - name: Install Apache/PHP/Requirements
   apt: pkg=apache2,libapache2-mod-php5,php5,php5-mysql,php5-cli,php5-dev,php5-curl,php5-gd,php5-imagick,php5-mcrypt,php5-memcache,php5-mhash,php5-pspell,php5-snmp,php5-xmlrpc,php5-xsl,php-pear state=present
 
-- name: Apaache2 Template Copy
+- name: Apache2 Template Copy
   template: src=default.conf.j2
             dest=/etc/apache2/sites-available/000-default.conf
   notify:
     restart apache2
+
+- name: Enable mod_rewrite
+  shell: a2enmod rewrite
 
 - name: Restart apache2
   service: name=apache2 state=restarted
