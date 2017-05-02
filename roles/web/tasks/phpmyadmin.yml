@@ -1,0 +1,28 @@
+---
+- name: install phpmyadmin
+  apt: pkg=phpmyadmin state=present
+
+- name: Copy the phpmyadmin template over to /etc/phpmyadmin/config.inc.php
+  template: src=config.sample.inc.php
+            dest=/etc/phpmyadmin/config.inc.php
+
+- name: Add default username and password for MySQL connection.
+  lineinfile: >
+    dest=/etc/phpmyadmin/config.inc.php
+    state=present
+    regexp="^.+\['{{ item.key }}'\].+$"
+    line="$cfg['Servers'][$i]['{{ item.key }}'] = '{{ item.value }}';"
+    insertbefore="^\?>"
+  with_items:
+  - { key: host, value: "{{ phpmyadmin_mysql_host }}" }
+  - { key: port, value: "{{ phpmyadmin_mysql_port }}" }
+  - { key: socket, value: "{{ phpmyadmin_mysql_socket }}" }
+  - { key: connect_type, value: "{{ phpmyadmin_mysql_connect_type }}" }
+  - { key: user, value: "{{ phpmyadmin_mysql_user }}" }
+  - { key: password, value: "{{ phpmyadmin_mysql_password }}"}
+
+- name: Create symlink
+  file: src=/usr/share/phpmyadmin/  dest=/home/{{ username }}/src/public_html/phpmyadmin state=link
+
+- name: Restart apache2
+  service: name=apache2 state=restarted

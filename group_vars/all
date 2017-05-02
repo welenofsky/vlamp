@@ -1,3 +1,10 @@
 # Github/Bitbucket Credentials
-git_repo: git@bitbucket.org:...
-git_ssh_priv_key: ~/.ssh/bitbucket
+git_repo: git@bitbucket.org:Three29media/carregistration.com.git
+git_ssh_priv_key: ~/.ssh/bitbucket_insecure
+
+phpmyadmin_mysql_host: localhost
+phpmyadmin_mysql_port: ""
+phpmyadmin_mysql_socket: ""
+phpmyadmin_mysql_connect_type: tcp
+phpmyadmin_mysql_user: root
+phpmyadmin_mysql_password: "{{ mysql_root_pass }}"
