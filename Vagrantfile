@@ -17,6 +17,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.private_key_path = ["~/.vagrant.d/insecure_private_key"]
 
   config.vm.synced_folder "src/", "/home/vagrant/src",
+    create: true,
     owner: "www-data",
     group: "www-data"
 
