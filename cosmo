@@ -1,4 +1,5 @@
 #!/bin/sh
+# MD5=cb3c2e839177644d6c11263085582a7c
 # Cosmo - the dev box toolkit
 # Regular Expression Notes:
 # REGEX for host /^(\[\s*(?:all|live|production)\s*\])$/gm
@@ -6,6 +7,13 @@
 
 main ()
 {
+    CURRENT_SUM=$(sed -n '3,$p' $0 | md5)
+    RECORDED_SUM=$(head -2 cosmo | grep -e 'MD5' | cut -c 7-)
+    if [ ! $CURRENT_SUM = $RECORDED_SUM ]; then
+        echo "BAD MD5 SUM. POSSIBLE INFECTED SCRIPT! EXITING!"
+        exit
+    fi
+
     if [ ! -n "$1" ]
     then
       usage
@@ -56,6 +64,12 @@ require_config ()
         echo "Config file not found. Please run\n"
         echo "  $0 init\n"
     fi
+}
+
+# This is never ran but serves to show how to update the MD5
+update_md5 ()
+{
+    `sed -i '' -e "s/^\# MD5=.*/# MD5=$(sed -n '3,$p' $0 | md5)/g" $0`
 }
 
 main $@
