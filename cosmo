@@ -1,0 +1,61 @@
+#!/bin/sh
+# Cosmo - the dev box toolkit
+# Regular Expression Notes:
+# REGEX for host /^(\[\s*(?:all|live|production)\s*\])$/gm
+# REGEX for key=val /^(\w*)(?:=)([\"\']?.*[\"\']?)$/gm  # Greedy value regex. Maybe change
+
+main ()
+{
+    if [ ! -n "$1" ]
+    then
+      usage
+      exit
+    fi
+
+    case "$1" in
+      init  ) init;;
+      deploy) deploy;;
+      *     ) usage;;
+    esac
+}
+
+usage ()
+{
+    echo "Usage: $0 <command>\n"
+    echo "Where <command> is one of the following:"
+    echo "  init,deploy,provision"
+}
+
+## Commands
+init ()
+{
+    echo "This utility will walk you through creating a cosmo.config file."
+    echo "This config file will serve as the manifest for creating and deploying your project\n"
+    echo "Press ^C at any time to quit."
+    exit;
+}
+
+deploy ()
+{
+    require_config
+    echo "Deploying..."
+}
+
+provision ()
+{
+    # Requires config file to continue
+    require_config
+    echo "Provisioning..."
+}
+
+## Helper Functions
+require_config ()
+{
+    if [ ! -f "cosmo.config" ]
+    then
+        echo "Config file not found. Please run\n"
+        echo "  $0 init\n"
+    fi
+}
+
+main $@
