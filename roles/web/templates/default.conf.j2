@@ -1,7 +1,7 @@
 <VirtualHost *:80>
         ServerAdmin webmaster@localhost
 
-        DocumentRoot {{ document_root }}
+        DocumentRoot {{ sync_folder }}{{ document_root }}
 
         <Directory />
             AllowOverride All

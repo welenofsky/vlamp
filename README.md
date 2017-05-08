@@ -48,3 +48,9 @@ vagrant provision
 ## Deployment
 
 todo
+
+
+### TODO
+
+Set root password? Idempotent?
+Casper/Cosmo whatever you call it script to seperate deploy from provision etc.

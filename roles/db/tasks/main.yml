@@ -20,8 +20,10 @@
   notify:
     - restart mysql
 
-- name: Set root MySQL user password
-  mysql_user:
-    name: root
-    password: "{{ mysql_root_pass }}"
-    check_implicit_admin: true
+- mysql_user:
+    name: "{{ phpmyadmin_mysql_user }}"
+    password: "{{ phpmyadmin_mysql_password }}"
+    priv: '*.*:ALL'
+    state: present
+  notify:
+    - restart mysql

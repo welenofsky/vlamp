@@ -14,5 +14,15 @@
 - name: Enable php5mcrypt module
   shell: php5enmod mcrypt
 
+- lineinfile:
+    path: /etc/php5/apache2/php.ini
+    regexp: '^upload_max_filesize ='
+    line: 'upload_max_filesize = 50M'
+
+- lineinfile:
+    path: /etc/php5/apache2/php.ini
+    regexp: '^post_max_size ='
+    line: 'post_max_size = 50M'
+
 - name: Restart apache2
   service: name=apache2 state=restarted
