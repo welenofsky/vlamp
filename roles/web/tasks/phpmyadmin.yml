@@ -22,7 +22,7 @@
   - { key: password, value: "{{ phpmyadmin_mysql_password }}"}
 
 - name: Create symlink
-  file: src=/usr/share/phpmyadmin/  dest="{{document_root}}/phpmyadmin" state=link
+  file: src=/usr/share/phpmyadmin/  dest="{{ sync_folder }}{{ document_root }}/phpmyadmin" state=link
 
 - name: Restart apache2
   service: name=apache2 state=restarted

@@ -48,3 +48,8 @@ vagrant provision
 ## Deployment
 
 todo
+
+
+### TODO
+
+Casper/Cosmo whatever you call it script to seperate deploy from provision etc.
