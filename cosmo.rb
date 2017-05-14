@@ -6,6 +6,18 @@ class Cosmo
 
   DEPENDENCIES = ['python2.7', 'pip', 'vagrant']
 
+  @config = Hash.new
+  @config[:ansible_name] = 'localhost',
+  @config[:ansible_user] = 'vagrant'
+  @config[:ansible_port] = '2222',
+  @config[:ansible_host] = 'localhost',
+  @config[:dbname] = 'test',
+  @config[:dbuser] = 'test',
+  @config[:dbpassword] = 'secret',
+  @config[:dbport] = '3306',
+  @config[:sync_folder] = '/home/{{ username }}/src',
+  @config[:document_root] = '/'
+  
   def initialize(*args)
     # TODO stub
     # pp args
@@ -52,16 +64,32 @@ class Cosmo
 
   end
 
+  """
+  Commands:
+    - init
+    - deploy
+    - provision
+
+  Vagrant Helper Commands:
+    - up
+    - down
+    - halt
+    - destroy (-f)
+    - phoenix
+  """
+
   # Used to call correct playbook or to edit config files.
   def init
     # TODO stub
     puts "Configuring project..."
 
-    # Inventory File
-    loop do
-      puts "What environment are you setting up? Example: local, prd:"
-      @inventory = STDIN.gets.chomp
-      break unless @inventory.empty?
+    @inventory = get_variable('What environment are you setting up (local): ', 'local')
+
+    unless @inventory == 'local'
+        @config[:ansible_name] = get_variable('What is the IP (#{@config[:ansible_name]}): ', @config[:ansible_name])
+        @config[:ansible_user] = 'localhost'
+        @config[:ansible_port] = '2222',
+        @config[:ansible_host] = 'localhost',
     end
 
     unless File.exist?("config/#{@inventory}")
@@ -72,62 +100,83 @@ class Cosmo
   end
 
   def deploy
+    @tags = ['deploy']
     # --limit=#{@env} ??
-    `ansible-playbook -i #{@inventory} #{@playbook} --private-key=~/.vagrant.d/insecure_private_key`
+    `ansible-playbook -i #{@inventory} #{@playbook}`
     unless $!.success?
       puts "Deploying project failed! Check above for more descriptive error message"
     end
   end
 
   def provision
-    `ansible-playbook -i #{@inventory} #{@playbook} --private-key=~/.vagrant.d/insecure_private_key`
-    unless $!.success?
-      puts "Provisioning project failed! Check above for more descriptive error message"
-    end
+    @tags = ['untagged']
+    @inventory = 'config/local'
+    ansible_playbook('Provisioning vagrant box')
   end
 
-  # Helper Functions
+  """
+  Helper Functions
+  """
   def command?(name)
-    `which #{name}`
+    `command -v #{name} 2> /dev/null | grep -q "#{name}"`
     $?.success?
   end
 
   # Do command and report error
   def do_command(cmd, error_msg)
-    system("#{cmd}")
+    system(cmd)
     unless $!.success?
       puts "Failed to #{error_msg}, Exiting..."
       exit
     end
   end
 
+  def ansible_playbook(task)
+    cmd = "ansible-playbook -i #{@inventory} playbook.yml --private-key=~/.vagrant.d/insecure_private_key --tags \"#{@tags.join(',')}\" --limit=local"
+    system(cmd)
+    unless $!.success?
+      puts "#{task} failed! Check above for more descriptive error message"
+    end
+  end
+
+  def get_variable(msg, default)
+    print msg
+    temp = STDIN.gets.chomp
+    temp.empty? ? default : temp 
+  end
+
 end
 
 class OptparseCosmo
 
-  ACTIONS = ['init', 'deploy', 'provision']
+  COMMANDS = ['init', 'deploy', 'provision', 'up', 'halt', 'phoenix', 'ssh']
 
   def self.parse(args)
 
     options = {}
     opt_parser = OptionParser.new do |opts|
-      opts.banner = "Usage: example.rb <command> [options]"
+      opts.banner =  "Usage: example.rb <command> [options]"
       opts.separator ""
-      opts.separator "Where command is one of the following:"
-      opts.separator "  init\t\t- Start a new project"
-      opts.separator "  deploy\t- Update existing project source code"
-      opts.separator "  provision\t- Setup environment"
+      opts.separator "  Where command is one of the following:"
+      opts.separator "    init      - Start a new project"
+      opts.separator "    deploy    - Update existing project source code"
+      opts.separator "    provision - Setup environment"
+      opts.separator "    up        - Bring Vagrant Box Up"
+      opts.separator "    down      - Bring Vagrant Box Down"
+      opts.separator "    phoenix   - Destroy and Resurrect Vagrant Box"
+      opts.separator "    ssh       - SSH into Vagrant Box"
 
-      action = args[0]
-      unless ACTIONS.index(action)
+
+      command = args[0]
+      unless COMMANDS.index(command)
         puts opts
         exit
       end
 
-      options[:command] = action
+      options[:command] = command
 
-      opts.on("-v", "--verbose", "Run verbosely") do |v|
-        options[:verbose] = v
+      opts.on("-f", "--force", "Force") do |v|
+        options[:force] = v
       end
 
     end
@@ -140,7 +189,8 @@ class OptparseCosmo
 end # OptparseCosmo
 
 options = OptparseCosmo.parse(ARGV)
-Cosmo.new(options)
+pp options
+# Cosmo.new(options)
 
 # pp options
 # pp ARGV

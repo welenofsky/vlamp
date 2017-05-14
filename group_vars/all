@@ -1,5 +1,5 @@
 # Github/Bitbucket Credentials
-git_repo: git@bitbucket.org:Three29media/carregistration.com.git
+git_repo: git@bitbucket.org:Name/repo.git
 git_ssh_priv_key: ~/.ssh/bitbucket_insecure
 
 phpmyadmin_mysql_host: localhost

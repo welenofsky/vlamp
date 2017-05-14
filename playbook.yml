@@ -1,6 +1,6 @@
 ---
-- name: Provisioning the vagrant box
-  hosts: local
+- name: Running Playbook...
+  hosts: all
   become: true
 
   roles:

@@ -1,20 +1,26 @@
 ---
+- name: Creates directory for RPC cache
+  file: path="{{ sync_folder }}/tmp/cache" state=directory owner=vagrant group=vagrant mode=0777 recurse=yes
+  tags: rpc
+
 - name: Upload ssh key
-  copy: src={{ git_ssh_priv_key }} dest=/home/{{ username }}/.ssh/id_rsa mode=0600 group={{ username }} owner={{ username }}
+  tags: deploy
+  copy: src={{ git_ssh_priv_key }} dest=/home/{{ username }}/.ssh/id_rsa mode=0600 group={{ username }} owner={{ username }}\
+  notify: restart apache2
 
 - name: Add SSH key
+  tags: deploy
   shell: 'eval "$(ssh-agent -s)" && ssh-add /home/{{ username }}/.ssh/id_rsa'
+  notify: restart apache2
 
 - name: Git pull repo
+  tags: deploy
   git: repo={{ git_repo }}
        dest=/{{ username }}/src/
        accept_hostkey=True
        key_file=/home/{{ username }}/.ssh/id_rsa
        update=True
-
-# RPC specific configuration inc
-- name: Creates directory
-  file: path="{{ sync_folder }}/tmp/cache" state=directory owner=vagrant group=vagrant mode=0777 recurse=yes
+  notify: restart apache2
 
 - name: Restart apache2
   service: name=apache2 state=restarted
