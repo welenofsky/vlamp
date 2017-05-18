@@ -5,7 +5,7 @@
 
 - name: Upload ssh key
   tags: deploy
-  copy: src={{ git_ssh_priv_key }} dest=/home/{{ username }}/.ssh/id_rsa mode=0600 group={{ username }} owner={{ username }}\
+  copy: src={{ git_ssh_priv_key }} dest=/home/{{ username }}/.ssh/id_rsa mode=0600 group={{ username }} owner={{ username }}
   notify: restart apache2
 
 - name: Add SSH key
