@@ -18,7 +18,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder "src/", "/home/vagrant/src",
     create: true,
     owner: "www-data",
-    group: "www-data"
+    group: "www-data",
+    mount_options: ["dmode=775,fmode=775"]
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "2048"]
