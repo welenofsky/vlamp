@@ -14,3 +14,7 @@
 
 - name: Installing build-tools
   apt: pkg=build-essential,autoconf,libtool,pkg-config,libpq-dev,python-mysqldb,imagemagick
+
+- name: Add {{ username }} to www-data group
+  become: true
+  command: usermod -a -G www-data vagrant
