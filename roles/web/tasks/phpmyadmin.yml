@@ -21,8 +21,13 @@
   - { key: user, value: "{{ phpmyadmin_mysql_user }}" }
   - { key: password, value: "{{ phpmyadmin_mysql_password }}"}
 
-- name: Create symlink
-  file: src=/usr/share/phpmyadmin/  dest="{{ sync_folder }}{{ document_root }}/phpmyadmin" state=link
+- name: Ensure phpMyAdmin config file is included in Apache config.
+  lineinfile:
+    dest: /etc/apache2/apache2.conf
+    state: present
+    regexp: "^Include.+phpmyadmin.+$"
+    line: "Include /etc/phpmyadmin/apache.conf"
+    insertafter: "EOF"
 
 - name: Restart apache2
   service: name=apache2 state=restarted
