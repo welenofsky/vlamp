@@ -1,9 +1,0 @@
----
-- name: Provisioning the vagrant box
-  hosts: local
-  become: true
-
-  roles:
-    - common
-    - web
-    - db

@@ -1,0 +1,4 @@
+# RPC Need this directory for it's cache
+- name: Creates directory
+  file: path="{{ sync_folder }}/tmp/cache" state=directory owner=vagrant group=vagrant mode=0777 recurse=yes
+  tags: rpc

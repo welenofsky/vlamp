@@ -17,3 +17,27 @@
         CustomLog /var/log/apache2/access.log combined
 
 </VirtualHost>
+<IfModule mod_ssl.c>
+    <VirtualHost *:443>
+            ServerAdmin webmaster@localhost
+
+            DocumentRoot {{ sync_folder }}{{ document_root }}
+
+            SSLCertificateFile /etc/apache2/ssl/apache.crt
+            SSLCertificateKeyFile /etc/apache2/ssl/apache.key
+
+            <Directory />
+                AllowOverride All
+                Require all granted
+            </Directory>
+
+            ErrorLog /var/log/apache2/error.log
+
+            # Possible values include: debug, info, notice, warn, error, crit,
+            # alert, emerg.
+            LogLevel warn
+
+            CustomLog /var/log/apache2/access.log combined
+
+    </VirtualHost>
+</IfModule>

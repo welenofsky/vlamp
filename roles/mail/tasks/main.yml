@@ -1,0 +1,27 @@
+---
+- name: Install Mailcatcher Dependencies
+  apt: name={{item}} state=installed
+  with_items:
+    - build-essential
+    - sqlite3
+    - ruby2.0
+    - ruby2.0-dev
+    - libsqlite3-dev
+
+- name: Install Mailcatcher
+  become: true
+  command: gem2.0 install mailcatcher -N
+
+- name: Create mailcatcher upstart file
+  template:
+    src: mailcatcher.conf.j2
+    dest: /etc/init/mailcatcher.conf
+
+- name: Enable mailcatcher service
+  service: name=mailcatcher enabled=yes state=started
+
+- name: Update php cli settings for mailcatcher
+  ini_file: dest=/etc/php5/cli/php.ini create=no option=sendmail_path value='/usr/local/bin/catchmail -f test@test.com' section=sendmail
+
+- name: Update php fpm settings for mailcatcher
+  ini_file: dest=/etc/php5/apache2/php.ini create=no option=sendmail_path value='/usr/local/bin/catchmail -f test@test.com' section=sendmail

@@ -1,0 +1,10 @@
+---
+- name: Running Playbook...
+  hosts: all
+  become: true
+
+  roles:
+    - common
+    - web
+    - db
+    - mail
