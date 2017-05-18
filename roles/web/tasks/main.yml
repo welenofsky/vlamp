@@ -1,5 +1,5 @@
 ---
 - include: apache2.yml
-- include: deploy_code.yml
+# - include: deploy_code.yml
 - include: composer.yml
 - include: phpmyadmin.yml

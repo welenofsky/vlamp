@@ -13,29 +13,9 @@ Using the ansible provisioning script
 ### config/
 Edit the config files for the respective environment. The files live in config folder. They should be self-explanatory. These files are for currently only contain the DB credentials and variables used for provisioning (like for the home folder name)
 
-### group_vars/all
-This is where you put your git private key and ssh repo clone link used for provisioning the virtualbox
+1. Setup
 
-
-
-## Setting Up Local Environment
-1. Create a virtual environment, .env/ in this directory by using virtualenv command
-```
-virtualenv .env/ --python=python2.7
-```
-
-2. Access the virtualenv
-```
-source .env/bin/activate
-```
-
-3. Install the dependency (ansible) with pip
-```
-pip install -r requirements.txt
-```
-
-4. Get Vagrant
-
+To setup just bring the box up with vagrant up. The first time it will take the longest.
 ```
 vagrant up
 ```
@@ -45,11 +25,4 @@ Now you should have a development environment. If you need to manually provision
 vagrant provision
 ```
 
-## Deployment
 
-todo
-
-
-### TODO
-
-Casper/Cosmo whatever you call it script to seperate deploy from provision etc.
