@@ -2,5 +2,4 @@
 - include: apache2.yml
 - include: deploy_code.yml
 - include: composer.yml
-# - include: rpc.yml
 - include: phpmyadmin.yml

@@ -1,8 +1,4 @@
 ---
-- name: Creates directory for RPC cache
-  file: path="{{ sync_folder }}/tmp/cache" state=directory owner=vagrant group=vagrant mode=0777 recurse=yes
-  tags: rpc
-
 - name: Upload ssh key
   tags: deploy
   copy: src={{ git_ssh_priv_key }} dest=/home/{{ username }}/.ssh/id_rsa mode=0600 group={{ username }} owner={{ username }}
