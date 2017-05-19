@@ -1,6 +1,6 @@
 ---
-- name: Install Apache/PHP/Requirements
-  apt: pkg=apache2,libapache2-mod-php5,php5,php5-mysql,php5-cli,php5-dev,php5-curl,php5-gd,php5-imagick,php5-mcrypt,php5-memcache,php5-mhash,php5-pspell,php5-xmlrpc,php5-xsl,php-pear state=present
+- name: Install Apache
+  apt: name=apache2 state=present
 
 - name: Create SSL dir
   file:
@@ -27,19 +27,6 @@
   apache2_module:
     state: present
     name: rewrite
-
-- name: Enable php5mcrypt module
-  shell: php5enmod mcrypt
-
-- lineinfile:
-    path: /etc/php5/apache2/php.ini
-    regexp: '^upload_max_filesize ='
-    line: 'upload_max_filesize = 50M'
-
-- lineinfile:
-    path: /etc/php5/apache2/php.ini
-    regexp: '^post_max_size ='
-    line: 'post_max_size = 50M'
 
 - name: Restart apache2
   service: name=apache2 state=restarted
