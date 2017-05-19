@@ -7,13 +7,15 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "test-welly-xenial"
 
   config.vm.network "private_network", type: "dhcp"
   config.vm.network :forwarded_port, guest: 1080, host: 1080
 
   config.ssh.insert_key = false
   config.ssh.private_key_path = ["~/.vagrant.d/insecure_private_key"]
+
+  config.vm.boot_timeout = 360
 
   config.vm.synced_folder "src/", "/home/vagrant/src",
     create: true,
