@@ -21,7 +21,7 @@
   service: name=mailcatcher enabled=yes state=started
 
 - name: Update php cli settings for mailcatcher
-  ini_file: dest=/etc/php5/cli/php.ini create=no option=sendmail_path value='/usr/local/bin/catchmail -f test@test.com' section=sendmail
+  ini_file: dest=/etc/php/5.6/cli/php.ini create=no option=sendmail_path value='/usr/local/bin/catchmail -f test@test.com' section=sendmail
 
 - name: Update apache2 settings for mailcatcher
-  ini_file: dest=/etc/php5/apache2/php.ini create=no option=sendmail_path value='/usr/local/bin/catchmail -f test@test.com' section=sendmail
+  ini_file: dest=/etc/php/5.6/apache2/php.ini create=no option=sendmail_path value='/usr/local/bin/catchmail -f test@test.com' section=sendmail
