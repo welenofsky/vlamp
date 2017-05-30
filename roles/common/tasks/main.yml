@@ -13,7 +13,7 @@
     name: pexpect
 
 - name: Installing build-tools
-  apt: pkg=build-essential,autoconf,libtool,pkg-config,libpq-dev,python-mysqldb,imagemagick,unzip
+  apt: pkg=build-essential,autoconf,libtool,pkg-config,libpq-dev,python-mysqldb,imagemagick,unzip,curl
 
 - name: Add {{ username }} to www-data group
   become: true
