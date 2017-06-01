@@ -45,5 +45,10 @@
     regexp: '^post_max_size ='
     line: 'post_max_size = 50M'
 
+- lineinfile:
+    path: /etc/php/5.6/apache2/php.ini
+    regexp: '^display_errors ='
+    line: 'display_errors = On'
+
 - name: Restart apache2
   service: name=apache2 state=restarted
