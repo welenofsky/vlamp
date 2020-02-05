@@ -7,9 +7,9 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/bionic64"
 
-  config.vm.network "private_network", type: "dhcp"
+  config.vm.network "private_network", ip: "10.0.3.29"
 
   config.ssh.insert_key = false
   config.ssh.private_key_path = ["~/.vagrant.d/insecure_private_key"]
@@ -28,6 +28,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.playbook = "playbook.yml"
     ansible.inventory_path = "config/local"
     ansible.limit = "local"
+    ansible.compatibility_mode = "2.0"
   end
 
 end

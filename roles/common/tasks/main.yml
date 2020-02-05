@@ -6,11 +6,15 @@
   apt: upgrade=safe update_cache=yes
 
 - name: Install git
-  apt: pkg=git,python-pip
+  apt: pkg=git,python3-pip
 
 - name: Install pexpect
   pip:
     name: pexpect
+
+- name: Install PyMySQL
+  pip:
+    name: PyMySQL
 
 - name: Installing build-tools
   apt: pkg=build-essential,autoconf,libtool,pkg-config,libpq-dev,python-mysqldb,imagemagick,unzip,curl,npm

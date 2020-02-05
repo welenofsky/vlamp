@@ -6,6 +6,7 @@ localhost ansible_user=vagrant ansible_port=2222 ansible_host=127.0.0.1
 host=localhost
 username=vagrant
 sync_folder=/home/{{ username }}/src
+ansible_python_interpreter=/usr/bin/python3
 
 # Document Root
 document_root=/

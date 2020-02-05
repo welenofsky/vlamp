@@ -5,15 +5,15 @@
 - name: Ensure MySQL is running
   service: name=mysql state=started enabled=true
 
-- name: Copy root PW config file to /root/.my.cnf
-  template: src=.my.cnf.j2
-            dest=/root/.my.cnf
-
 - name: Set root MySQL user password
   mysql_user:
     name: root
     password: "{{ mysql_root_pass }}"
-    check_implicit_admin: true
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Copy root PW config file to /root/.my.cnf
+  template: src=.my.cnf.j2
+            dest=/root/.my.cnf
 
 - name: Create a new database with name '{{ dbname }}'
   mysql_db:

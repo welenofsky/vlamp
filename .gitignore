@@ -1,9 +1,8 @@
 .env/
+venv/
 *.swp
 *.retry
-src/*
+*.log
 .vagrant/
-\.idea/
-bitbucket_insecure\.pub
-bitbucket_insecure
+.idea/
 src/

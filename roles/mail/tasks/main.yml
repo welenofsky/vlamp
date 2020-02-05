@@ -1,27 +1,24 @@
 ---
 - name: Install Mailcatcher Dependencies
-  apt: name={{item}} state=installed
-  with_items:
-    - build-essential
-    - sqlite3
-    - ruby2.0
-    - ruby2.0-dev
-    - libsqlite3-dev
+  apt:
+    name: ['build-essential',
+           'sqlite3', 'ruby2.5', 'ruby2.5-dev', 'libsqlite3-dev']
+    state: present
 
 - name: Install Mailcatcher
   become: true
-  command: gem2.0 install mailcatcher -N
+  command: gem install mailcatcher -N
 
 - name: Create mailcatcher upstart file
   template:
-    src: mailcatcher.conf.j2
-    dest: /etc/init/mailcatcher.conf
+    src: mailcatcher.service.j2
+    dest: /etc/systemd/system/mailcatcher.service
 
 - name: Enable mailcatcher service
   service: name=mailcatcher enabled=yes state=started
 
 - name: Update php cli settings for mailcatcher
-  ini_file: dest=/etc/php/5.6/cli/php.ini create=no option=sendmail_path value='/usr/local/bin/catchmail -f test@test.com' section=sendmail
+  ini_file: dest=/etc/php/7.3/cli/php.ini create=no option=sendmail_path value='/usr/local/bin/catchmail -f test@test.com' section=sendmail
 
 - name: Update apache2 settings for mailcatcher
-  ini_file: dest=/etc/php/5.6/apache2/php.ini create=no option=sendmail_path value='/usr/local/bin/catchmail -f test@test.com' section=sendmail
+  ini_file: dest=/etc/php/7.3/apache2/php.ini create=no option=sendmail_path value='/usr/local/bin/catchmail -f test@test.com' section=sendmail
