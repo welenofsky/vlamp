@@ -1,8 +1,8 @@
+# Vagrant Box Config
 [local]
 localhost ansible_user=vagrant ansible_port=2222 ansible_host=127.0.0.1
 
 [local:vars]
-# Vagrant Box Config
 host=localhost
 username=vagrant
 sync_folder=/home/{{ username }}/src
@@ -19,11 +19,3 @@ dbport=3306
 
 # MySQL Root password 
 mysql_root_pass=toor
-
-# MySQL PMA User Details
-phpmyadmin_mysql_host=localhost
-phpmyadmin_mysql_port=""
-phpmyadmin_mysql_socket=""
-phpmyadmin_mysql_connect_type=tcp
-phpmyadmin_mysql_user=pma
-phpmyadmin_mysql_password=localpma
